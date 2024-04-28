@@ -9,7 +9,8 @@ exports.findOrder = (req, res) => {
       $match: {
         user_id: id,
       },
-    }, {
+    },
+    {
       $lookup: {
         from: "products",
         localField: "cart_items",
@@ -29,21 +30,49 @@ exports.findOrder = (req, res) => {
 };
 
 exports.addToCart = (req, res) => {
-  const id = Number(req.params.id)
-  const productCode = String(req.body.product)
+  const id = Number(req.params.id);
+  const productCode = String(req.body.product);
 
-  Order.updateOne({
-    user_id : id
-  },{
+  Order.updateOne(
+    {
+      user_id: id,
+    },
+    {
       $addToSet: {
-        cart_items: productCode
-      }
-  })
-  .then((result) => {
-    res.send(result)
-  }).catch((err) => {
-    res.status(409).send({
-      message: err.me
+        cart_items: productCode,
+      },
+    }
+  )
+    .then((result) => {
+      res.send(result);
     })
-  })
-}
+    .catch((err) => {
+      res.status(409).send({
+        message: err.message,
+      });
+    });
+};
+
+exports.removeFromCart = (req, res) => {
+  const id = Number(req.params.id);
+  const productCode = String(req.params.product);
+
+  Order.updateOne(
+    {
+      user_id: id,
+    },
+    {
+      $pull: {
+        cart_items: productCode,
+      },
+    }
+  )
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(409).send({
+        message: err.message,
+      });
+    });
+};
