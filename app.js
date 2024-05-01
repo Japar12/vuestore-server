@@ -3,11 +3,9 @@ const app = express();
 const path = require("path");
 const PORT = process.env.PORT || 8000;
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+var cors = require("cors");
+
+app.use(cors()); // Use this after the variable declaration
 
 app.use(express.json());
 app.use(
