@@ -55,7 +55,7 @@ exports.addToCart = (req, res) => {
 
 exports.removeFromCart = (req, res) => {
   const id = Number(req.params.id);
-  const productCode = String(req.params.product);
+  const productCode = String(req.params.code);
 
   Order.updateOne(
     {
